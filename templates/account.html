@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='account.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Account</h1>
+    <table class="table table-bordered">
+        <tr>
+            <th>Username</th>
+            <td>{{ current_user.username }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ current_user.email }}</td>
+        </tr>
+        <tr>
+            <th>Balance</th>
+            <td>${{ current_user.balance | round(2) }}</td>
+        </tr>
+    </table>
+    <h2>Add Funds</h2>
+    <form method="POST" class="form-inline">
+        {{ form.hidden_tag() }}
+        <div class="form-group mx-sm-3 mb-2">
+            {{ form.amount.label(class="sr-only") }}
+            {{ form.amount(class="form-control", step="0.01", placeholder="Amount") }}
+        </div>
+        {{ form.submit(class="btn btn-primary mb-2") }}
+    </form>
+</div>
+{% endblock %}
