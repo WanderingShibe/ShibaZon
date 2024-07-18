@@ -6,7 +6,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from dotenv import load_dotenv
 from flask import Flask
 from flask_login import LoginManager
-from flask_sqlalchemy import SQLAlchemy
 
 from models import User, db
 from routes import configure_routes
@@ -24,6 +23,8 @@ def create_app(config_name=None):
 
     # Get required secret key and database URI
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
+
+    # Configure seperate configurations for testing database and real database
     if config_name == "testing":
         app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
     else:

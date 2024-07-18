@@ -5,10 +5,6 @@ flask_wtf
 sqlalchemy
 requests
 python-dotenv
-# pymysql
-# mysql.connector
-# mysqlclient
-# psycopg2
 psycopg2-binary
 email_validator
 names

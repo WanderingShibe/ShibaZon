@@ -1,13 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import (
-    DecimalField,
-    EmailField,
-    FloatField,
-    PasswordField,
-    StringField,
-    SubmitField,
-)
-from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
+from wtforms import EmailField, FloatField, PasswordField, StringField, SubmitField
+from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 
 # Create the neccessary forms for the store, utilising FlaskForm
