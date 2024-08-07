@@ -1,0 +1,66 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "EKS Cluster and Node Group"
+
+Parameters:
+  VPCId:
+    Type: "String"
+    Description: "VPC Id"
+  PublicSubnet1Id:
+    Type: "String"
+    Description: "Public Subnet 1 Id"
+  PublicSubnet2Id:
+    Type: "String"
+    Description: "Public Subnet 2 Id"
+  PrivateSubnet1Id:
+    Type: "String"
+    Description: "Private Subnet 1 Id"
+  PrivateSubnet2Id:
+    Type: "String"
+    Description: "Private Subnet 2 Id"
+  EKSClusterRoleArn:
+    Type: "String"
+    Description: "EKS Cluster Role ARN"
+  EKSNodeInstanceRoleArn:
+    Type: "String"
+    Description: "EKS Node Instance Role ARN"
+
+Resources:
+  EKSCluster:
+    Type: "AWS::EKS::Cluster"
+    Properties:
+      Name: "my-eks-cluster"
+      RoleArn: !Ref EKSClusterRoleArn
+      ResourcesVpcConfig:
+        SubnetIds:
+          - !Ref PublicSubnet1Id
+          - !Ref PublicSubnet2Id
+          - !Ref PrivateSubnet1Id
+          - !Ref PrivateSubnet2Id
+
+  NodeGroup:
+    Type: "AWS::EKS::Nodegroup"
+    Properties:
+      ClusterName: !Ref EKSCluster
+      NodegroupName: "standard-workers"
+      ScalingConfig:
+        DesiredSize: 3
+        MaxSize: 4
+        MinSize: 1
+      Subnets:
+        - !Ref PublicSubnet1Id
+        - !Ref PublicSubnet2Id
+        - !Ref PrivateSubnet1Id
+        - !Ref PrivateSubnet2Id
+      InstanceTypes:
+        - "t3.medium"
+      AmiType: "AL2_x86_64"
+      NodeRole: !Ref EKSNodeInstanceRoleArn
+
+Outputs:
+  EKSClusterName:
+    Description: "EKS Cluster Name"
+    Value: !Ref EKSCluster
+
+  EKSNodeGroupName:
+    Description: "EKS Node Group Name"
+    Value: !Ref NodeGroup

@@ -1,0 +1,27 @@
+RDSDBInstance:
+  Type: "AWS::RDS::DBInstance"
+  Properties:
+    DBInstanceIdentifier: !Sub "${AWS::StackName}-rds-db-instance"
+    AllocatedStorage: 20
+    DBInstanceClass: db.t3.micro
+    Engine: postgres
+    MasterUsername: admin
+    MasterUserPassword: "password" # Change this to a secure password in practice
+    VPCSecurityGroups:
+      - !Ref RDSDBSecurityGroup
+    DBSubnetGroupName: !Ref DBSubnetGroup
+    PubliclyAccessible: true
+
+RDSDBSecurityGroup:
+  Type: "AWS::EC2::SecurityGroup"
+  Properties:
+    GroupDescription: RDS Security Group
+    VpcId: !Ref VPC
+
+DBSubnetGroup:
+  Type: "AWS::RDS::DBSubnetGroup"
+  Properties:
+    DBSubnetGroupDescription: !Sub "${AWS::StackName} DB Subnet Group"
+    SubnetIds:
+      - !Ref PublicSubnet1
+      - !Ref PublicSubnet2
